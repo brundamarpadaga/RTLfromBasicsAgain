@@ -1,0 +1,57 @@
+{
+    "version": "2.0.0",
+    "inputs": [
+        {
+            "id": "topModule",
+            "type": "promptString",
+            "description": "Top module name (matches design/<name>/ and testbench/<name>_tb.sv)",
+            "default": "counter"
+        }
+    ],
+    "tasks": [
+        {
+            "label": "Simulate",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "TOP=${input:topModule}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Simulate + Open Waveform",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "TOP=${input:topModule}",
+                "wave"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "clean"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}

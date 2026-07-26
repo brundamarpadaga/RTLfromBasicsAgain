@@ -1,0 +1,77 @@
+RTL SIMULATION WORKFLOW — QUICK REFERENCE
+===========================================
+
+PROJECT LAYOUT
+---------------
+design/<module_name>/<module_name>.sv     -> RTL design file(s)
+testbench/<module_name>_tb.sv             -> testbench for that module
+build/                                     -> generated .out and .vcd files (safe to delete)
+
+Example for a module called "alu":
+  design/alu/alu.sv
+  testbench/alu_tb.sv
+
+The Makefile auto-discovers all .sv files under design/<TOP>/ and pairs them
+with testbench/<TOP>_tb.sv. No Makefile edits needed for a new module as long
+as you follow this naming pattern.
+
+
+TESTBENCH REQUIREMENT
+----------------------
+Your testbench's VCD dump filename MUST match "<TOP>_tb.vcd" so the Makefile
+can find and move it into build/. Example for "alu_tb":
+
+  initial begin
+    $dumpfile("alu_tb.vcd");
+    $dumpvars(0, alu_tb);
+  end
+
+
+COMMANDS
+---------
+make                    -> builds/simulates using the current default TOP
+                           (check the Makefile's "TOP = ..." line for what
+                           that currently is)
+
+make TOP=<module>       -> compile + simulate a specific module, e.g.:
+                           make TOP=alu
+                           make TOP=counter
+
+make TOP=<module> wave  -> same as above, then opens GTKWave on the VCD
+
+make clean              -> deletes build/ (fresh rebuild next time)
+
+
+VS CODE TASK (optional shortcut)
+----------------------------------
+Ctrl+Shift+B -> runs the default "Simulate" task, will prompt you for the
+                module (top) name in a text box, then runs `make TOP=<name>`.
+
+Other tasks available via Command Palette -> "Run Task":
+  - Simulate
+  - Simulate + Open Waveform
+  - Clean
+
+
+TROUBLESHOOTING
+-----------------
+- "port already bound" / undeclared signal errors during compile:
+  usually means leftover/duplicated code in the testbench (e.g. copy-pasted
+  signal names that were never declared, or a port connected twice). Check
+  the DUT instantiation and initial blocks for duplicates.
+
+- GTKWave window doesn't appear:
+  likely an X11 forwarding issue in the devcontainer, not a Makefile problem.
+
+- Changed the top module but nothing rebuilds:
+  run `make clean` first, then `make TOP=<module>` again.
+
+
+NOTES ON THE ALU EXERCISE (in progress)
+------------------------------------------
+design/alu/alu.sv        4-bit ALU: op 00=add, 01=sub, 10=and, 11=or,
+                          combinational "zero" flag output.
+testbench/alu_tb.sv      apply stimulus vectors, $display/$monitor results,
+                          dump alu_tb.vcd.
+
+Run with: make TOP=alu        (or) make TOP=alu wave
