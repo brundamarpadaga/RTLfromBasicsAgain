@@ -1,20 +1,23 @@
 {
-    "name": "SystemVerilog Dev",
-    "image": "ubuntu:jammy",
-    "runArgs": [
-      "--name",
-      "systemverilog-dev"
-    ],
-    "remoteEnv": {
-      "LANG": "C.UTF-8"
-    },
-    "postCreateCommand": "./.devcontainer/post-create.sh",
-    "customizations": {
-      "vscode": {
-        "extensions": [
-          "mshr-h.veriloghdl",
-          "ms-python.python"
-        ]
-      }
+  "name": "SystemVerilog Dev",
+  "image": "ubuntu:jammy",
+  "runArgs": [
+    "--name",
+    "systemverilog-dev"
+  ],
+  "remoteEnv": {
+    "LANG": "C.UTF-8"
+  },
+  "mounts": [
+    "source=claude-code-config,target=/root/.claude,type=volume"
+  ],
+  "postCreateCommand": "./.devcontainer/post-create.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "mshr-h.veriloghdl",
+        "ms-python.python"
+      ]
     }
+  }
 }

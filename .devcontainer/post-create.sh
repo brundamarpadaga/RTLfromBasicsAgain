@@ -20,6 +20,13 @@ pip3 install \
     isort \
     pytest \
     yapf
+
+# Node.js (required by Claude Code CLI)
+curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+DEBIAN_FRONTEND=noninteractive apt install -y nodejs
+
+# Claude Code CLI
+npm install -g @anthropic-ai/claude-code
  
 # Verible
 ARCH=$(uname -m)
